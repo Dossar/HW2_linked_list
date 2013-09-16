@@ -24,7 +24,7 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 
 
 # Project Name
-PROJECTNAME=linked_lists
+PROJECTNAME=lists
 
 # Active Configuration
 DEFAULTCONF=Debug
