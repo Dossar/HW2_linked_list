@@ -14,21 +14,24 @@
  */
 int main(int argc, char** argv) {
 
-    clock_t startTime = clock();
-    
-    // something that takes a lot of execution time.
-    int x = 0;
-    int y = 0;    
-    for (x = 0; x < 100000; x++) {
-        y = 0;
-        while (y < 100000) {
-            y++;
-        }
-    }
+   clock_t startTime = clock();
 
-    clock_t endTime = clock();
-    double cpu_time = (double) (endTime - startTime);
-    printf("total cpu time = %f\n\n", cpu_time);
-    return (EXIT_SUCCESS);
+   // something that takes a lot of execution time.
+   //    int x = 0;
+   //    int y = 0;    
+   //    for (x = 0; x < 100000; x++) {
+   //        y = 0;
+   //        while (y < 100000) {
+   //            y++;
+   //        }
+   //    }
+
+   display_array(); // function call from another source file.
+   a_check(5);
+
+   clock_t endTime = clock();
+   double cpu_time = (double) (endTime - startTime);
+   printf("total cpu time = %f\n\n", cpu_time);
+   return (EXIT_SUCCESS);
 }
 

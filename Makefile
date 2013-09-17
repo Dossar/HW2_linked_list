@@ -81,7 +81,10 @@ clobber: .clobber-post
 
 
 # all
-all: .all-post
+all: 	
+	
+	
+	.all-post	
 
 .all-pre:
 # Add your pre 'all' code here...
@@ -122,6 +125,7 @@ help: .help-post
 
 
 # include project implementation makefile
+
 include nbproject/Makefile-impl.mk
 
 # include project make variables
