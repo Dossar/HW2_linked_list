@@ -13,7 +13,7 @@ int count = ARRAYSIZE; // size counter
 void a_check(int position) {
    clock_t startTime = clock();
    
-   printf("%d",array[position]);
+   printf("%d\n",array[position]);
 
    clock_t endTime = clock();
    double cpu_time = (double) (endTime - startTime);
