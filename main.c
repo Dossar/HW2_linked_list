@@ -26,8 +26,9 @@ int main(int argc, char** argv) {
    //        }
    //    }
 
-   display_array(); // function call from another source file.
+   
    a_check(5);
+   //a_display();
 
    clock_t endTime = clock();
    double cpu_time = (double) (endTime - startTime);

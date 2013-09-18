@@ -15,7 +15,7 @@ extern "C" {
    void a_check(int position);
    void a_insert_start(int data);
    void a_remove_start(void);   
-   void display_array();
+   void a_display();
 
 
 #ifdef	__cplusplus
