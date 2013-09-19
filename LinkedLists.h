@@ -13,11 +13,16 @@
 extern "C" {
 #endif
 
-   void l_check(int position);
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+   
+
+   double l_check(int position);
    void l_insert(int data);
    void l_remove(void);
    void l_display(void);
-   //void l_display(int start);
+   void l_display_count(int start);
    void l_remove_big_elements();
 
 #ifdef	__cplusplus
