@@ -27,12 +27,12 @@ int main(int argc, char** argv) {
    //    }
 
    
-   a_check(5);
-   //a_display();
+   l_check(5);
+   l_display();
 
    clock_t endTime = clock();
    double cpu_time = (double) (endTime - startTime);
-   printf("total cpu time = %f\n\n", cpu_time);
+   printf("\ntotal cpu time = %f\n", cpu_time);
    return (EXIT_SUCCESS);
 }
 
