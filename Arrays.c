@@ -1,9 +1,6 @@
 /**
- * IMPORTANT! All of my code here looks like it will probably work for the arrays portion of the assignment.
- * We can change the array size and mid value numbers later, this is just to test that the functions work first before the big values come in.
- * I kept getting an error message saying that size2 is undeclared even though I declared it as a global function.
- * size2 is a global variable that keeps track of the array's current size. But it's apparently "undeclared". Look into this?
- * I also commented out the functions that were in the previous arrays.c file
+ * All of the functions work. Now I just need to put in the random and time functions.
+ * However, the clock functions aren't working (after the adding function, it keeps saying 0 microseconds)
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -11,8 +8,8 @@
 /* #include "Arrays.h" */
 
 /* GLOBAL VARIABLE DECLARATIONS */
-#define ARRAYSIZE 10
-#define mid_value 5
+#define ARRAYSIZE 1000000
+#define mid_value 500000
 
 /* ARRAYS */
 int array1[ARRAYSIZE + 5] = {0}; /* define the array to work with, 5 free slots */
@@ -22,7 +19,6 @@ int count = 0; /* Global variable counting how many elements were deleted of a c
 int size2 = ARRAYSIZE; /* This is for dealing with the changing array, initialized to the arraysize value. */
 
 /* FUNCTIONS */
-void fillArray(void);
 void displayArray(void);
 void startOfArray(void);
 void removeSOA(void);
@@ -32,42 +28,47 @@ void remove_middle_array(int);
 
 int main(int argc, char** argv) {
 
-  fillArray();
+  srand(time(NULL)); /* Initalize random number generator with current time as the seed value */
+
+  /* This is for filling in the array. */
+  int i;
+  for( i = 0 ; i < size2 ; i++ ){
+    array1[i] = rand() % 1000001; /* Fill the array with integers 0-1000000 */
+  }
+
+  /* See first 5 elements before functions are performed */
   displayArray();
+
+  /* Add element to the start of the array */
   startOfArray();
+
+  /* Remove element from the start of the array */
   removeSOA();
+
+  /* Check position in the start, middle, and end of the array. */
   checkPosArr();
   checkPosArr();
   checkPosArr();
+
+  /* Remove all elements bigger than 500,000 */
   remove_big_elements_array();
 
   return 0;
 
 }
 
-/* This function fills in the array. */
-void fillArray(){
 
-  int i;
-  for( i = 0 ; i < size2 ; i++ ){
-    array1[i] = (i+1); /* Fill the first 10 spots of the array with integers 1-10 */
-  }
-
-  return;
-
-}
-
-/* This function displays the current array. */
+/* This function displays the first few elements of the array. */
 void displayArray(){
 
   int i;
-  printf("The current array is: [ ");
-  for( i = 0 ; i < size2 ; i++ ){
+  printf("The first 5 elements of the array are: [");
+  for( i = 0 ; i < 5 ; i++ ){
 
-    printf("%d ", array1[i] );
+    printf("%d,", array1[i] );
 
   }
-  printf("]\n\n"); /* The array has been printed out */
+  printf("...]\n\n"); /* The first 5 integers of the array have been printed out */
 
   return;
 
@@ -76,14 +77,21 @@ void displayArray(){
 /* This function adds an integer at the start of the array. */
 void startOfArray(){
 
+  /* Start time of adding to the start operation */
+  clock_t startTime, endTime;
+  startTime = clock();
+
   int i;
-  for( i = size2 ; i >= 0 ; i-- ){
+  for( i = size2 ; i > -1 ; i-- ){
     array1[i] = array1[i-1]; /* Fills the next position (starting with the position after the last element) with the previous position, this is for shifting the array to compensate for the first element */
   }
-  int size2 = ++size2; /* After the for loop, increase size2 variable by 1. It wasn't increased before the for loop because it was used for the index as opposed to the total elements. */
-  printf("Please input an integer to insert at the start of the array: ");
-  scanf("%d",array1[0]); /* Save user's input into start of the array */
-  printf("\n");
+  size2 = (size2 + 1); /* After the for loop, increase size2 variable by 1. It wasn't increased before the for loop because it was used for the index as opposed to the total elements. */
+  array1[0] = rand() % 1000000; /* Add first element of the array with another randomly generated number between 0 and 1000000
+
+  endTime = clock(); /* End time of adding to the start operation */
+  double cpu_time = (double) (endTime - startTime);
+  printf("Adding to the start of the array took %ld microseconds.\n", cpu_time );
+
   displayArray();
 
   return;
@@ -93,12 +101,22 @@ void startOfArray(){
 /* This function removes an integer at the start of the array. */
 void removeSOA(){
 
+  /* Start time of removing from the start operation */
+  clock_t startTime, endTime;
+  startTime = clock();
+
   int i;
+  int tempdisplay = array1[0];
   for( i = 0 ; i < size2 ; i++ ){
     array1[i] = array1[i+1]; /* Fills the previous position (starting with the first position) with the next position, this is for shifting the array to simulate deleting the first element */
   }
-  int size2 = --size2; /* After the for loop, decrease size2 variable by 1. It wasn't decreased before the for loop because it was used for the index as opposed to the total elements before the element was deleted. */
-  printf("\n");
+  size2 = (size2 - 1); /* After the for loop, decrease size2 variable by 1. It wasn't decreased before the for loop because it was used for the index as opposed to the total elements before the element was deleted. */
+
+  endTime = clock(); /* End time of removing from the start operation */
+  double cpu_time = (double) (endTime - startTime);
+  printf("Removing from the start of the array took %ld microseconds.\n", cpu_time );
+
+  printf("The first element, %d, has been removed.\n", tempdisplay);
   displayArray();
 
   return;
@@ -113,24 +131,32 @@ void remove_middle_array(int pos){
   for( i = pos ; i < size2 ; i++ ){
     array1[i] = array1[i+1]; /* Fills the previous position (starting with the first position) with the next position, this is for shifting the array to simulate deleting the current element */
   }
-  int size2 = --size2; /* After the for loop, decrease size2 variable by 1. It wasn't decreased before the for loop because it was used for the index as opposed to the total elements before the element was deleted. */
+  size2 = (size2 - 1); /* After the for loop, decrease size2 variable by 1. It wasn't decreased before the for loop because it was used for the index as opposed to the total elements before the element was deleted. */
   printf("\n");
 
   return;
 
 }
 
-/* This function checks a certain position in the array. */
+/* This function checks the start position in the array. */
 void checkPosArr(){
 
   int userindex;
-  printf("Please enter the position in the array would you like to check the integer value: ");
+  printf("Please enter a position you would like to check for its value: ");
   scanf("%d",&userindex);
   while( userindex < 0 || userindex > size2 - 1 ){
-    printf("\nPlease enter a position between 0 and &d: ", (size2-1) );
+    printf("\nPlease enter a position between 0 and %d: ", (size2-1) );
     scanf("%d",&userindex);
   }
-  printf("The value at position %d is: %d.\n\n", userindex, array1[userindex] );
+
+  /* Start time of check operation */
+  clock_t startTime, endTime;
+  startTime = clock();
+
+  endTime = clock(); /* End time of check operation */
+  double cpu_time = (double) (endTime - startTime);
+  printf("Checking position [%d] took %ld microseconds.\n", userindex, cpu_time );
+  printf("The value at position [%d] is: %d.\n\n", userindex, array1[userindex] );
 
   return;
 
@@ -139,45 +165,29 @@ void checkPosArr(){
 /* This function removes all of the values 500,000 and greater in the array. */
 void remove_big_elements_array(){
 
+  /* Start time of removing mid_value operation */
+  clock_t startTime, endTime;
+  startTime = clock();
+
   count = 0; /* Reinitialize the delete count to zero */
   int i;
-  for( i = 0 ; i < size2 - 1 ; i++ ){
+  for( i = 0 ; i < size2 ; i++ ){
 
-    if( array1[i] > mid_value )
-    {
-      remove_middle_array(i); /* Pass current position i to the remove middle array function to shift the array */
-      count++;
-    }
+    if( array1[i] > mid_value ){
+        remove_middle_array(i); /* Pass current position i to the remove middle array function to shift the array */
+        count++;
+        i--; /* This subtraction compensates for the i++ in the for loop parameters */
+    } /* End of if statement */
 
-  }
+  } /* End of for loop */
+
+  endTime = clock(); /* End time of removing mid_value operation */
+  double cpu_time = (double) (endTime - startTime);
+  printf("Removing all values > %d took %ld microseconds.\n", mid_value , cpu_time );
+
   printf("%d integers with value higher than %d were removed from the array.\n", count, mid_value );
   displayArray();
 
   return;
 
 }
-
-/* void a_check(int position) {
-   clock_t startTime = clock();
-   
-   printf("%d\n",array[position]);
-
-   clock_t endTime = clock();
-   double cpu_time = (double) (endTime - startTime);
-   printf("query time = %f", cpu_time);
-}
-
-void a_insert_start(int data) {
-
-}
-
-void a_remove_start(void) {
-
-}
-
-void a_display() {
-   int x = 0;
-   while(x < count){
-	  printf("%d\n",array[x]);
-   }
-} */
