@@ -1,11 +1,10 @@
 /**
- * All of the functions work. Now I just need to put in the random and time functions.
- * However, the clock functions aren't working (after the adding function, it keeps saying 0 microseconds)
+ * Array function program by Roy Van Liew. Homework 2 was a collaboration between Mike Meding and Roy Van Liew
+ * All of the functions here work and the time output looks fine. The function names need to be changed I think, however.
  */
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-/* #include "Arrays.h" */
 
 /* GLOBAL VARIABLE DECLARATIONS */
 #define ARRAYSIZE 1000000
@@ -33,7 +32,7 @@ int main(int argc, char** argv) {
   /* This is for filling in the array. */
   int i;
   for( i = 0 ; i < size2 ; i++ ){
-    array1[i] = rand() % 1000001; /* Fill the array with integers 0-1000000 */
+    array1[i] =  (1000* (rand() % 1000)) + (rand() % 1000); /* Since RAND_MAX is defined as (0x7fff) = (32767), we need larger numbers here */
   }
 
   /* See first 5 elements before functions are performed */
@@ -86,11 +85,11 @@ void startOfArray(){
     array1[i] = array1[i-1]; /* Fills the next position (starting with the position after the last element) with the previous position, this is for shifting the array to compensate for the first element */
   }
   size2 = (size2 + 1); /* After the for loop, increase size2 variable by 1. It wasn't increased before the for loop because it was used for the index as opposed to the total elements. */
-  array1[0] = rand() % 1000000; /* Add first element of the array with another randomly generated number between 0 and 1000000
+  array1[0] = rand() % 1000000; /* Add first element of the array with another randomly generated number between 0 and 1000000 */
 
   endTime = clock(); /* End time of adding to the start operation */
-  double cpu_time = (double) (endTime - startTime);
-  printf("Adding to the start of the array took %ld microseconds.\n", cpu_time );
+  double cpu_time = (double)(endTime - startTime) / CLOCKS_PER_SEC;
+  printf("Adding to the start of the array took %f seconds.\n", cpu_time );
 
   displayArray();
 
@@ -113,8 +112,8 @@ void removeSOA(){
   size2 = (size2 - 1); /* After the for loop, decrease size2 variable by 1. It wasn't decreased before the for loop because it was used for the index as opposed to the total elements before the element was deleted. */
 
   endTime = clock(); /* End time of removing from the start operation */
-  double cpu_time = (double) (endTime - startTime);
-  printf("Removing from the start of the array took %ld microseconds.\n", cpu_time );
+  double cpu_time = (double)(endTime - startTime) / CLOCKS_PER_SEC;
+  printf("Removing from the start of the array took %f seconds.\n", cpu_time );
 
   printf("The first element, %d, has been removed.\n", tempdisplay);
   displayArray();
@@ -132,7 +131,6 @@ void remove_middle_array(int pos){
     array1[i] = array1[i+1]; /* Fills the previous position (starting with the first position) with the next position, this is for shifting the array to simulate deleting the current element */
   }
   size2 = (size2 - 1); /* After the for loop, decrease size2 variable by 1. It wasn't decreased before the for loop because it was used for the index as opposed to the total elements before the element was deleted. */
-  printf("\n");
 
   return;
 
@@ -153,10 +151,11 @@ void checkPosArr(){
   clock_t startTime, endTime;
   startTime = clock();
 
+  printf("The value at position [%d] is: %d.\n", userindex, array1[userindex] );
+
   endTime = clock(); /* End time of check operation */
-  double cpu_time = (double) (endTime - startTime);
-  printf("Checking position [%d] took %ld microseconds.\n", userindex, cpu_time );
-  printf("The value at position [%d] is: %d.\n\n", userindex, array1[userindex] );
+  double cpu_time = (double)(endTime - startTime) / CLOCKS_PER_SEC;
+  printf("Checking position [%d] took %f seconds.\n\n", userindex, cpu_time );
 
   return;
 
@@ -182,8 +181,8 @@ void remove_big_elements_array(){
   } /* End of for loop */
 
   endTime = clock(); /* End time of removing mid_value operation */
-  double cpu_time = (double) (endTime - startTime);
-  printf("Removing all values > %d took %ld microseconds.\n", mid_value , cpu_time );
+  double cpu_time = (double)(endTime - startTime) / CLOCKS_PER_SEC;
+  printf("Removing all values > %d took %f seconds.\n", mid_value , cpu_time );
 
   printf("%d integers with value higher than %d were removed from the array.\n", count, mid_value );
   displayArray();
